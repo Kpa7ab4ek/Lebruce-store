@@ -1,0 +1,8 @@
+.blocks {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    max-width: 1000px;
+    justify-content: center;
+    row-gap: 400px;
+    margin: 0 auto;
+}

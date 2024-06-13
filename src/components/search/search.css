@@ -1,0 +1,34 @@
+.search__results {
+    position: absolute;
+    z-index: 111;
+    background-color: whitesmoke;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    max-width: 100%;
+    padding: 20px;
+    border: 1px solid black;
+}
+
+.search__results h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.search__results ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.search__results li {
+    margin-bottom: 5px;
+}
+
+.search__results a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.search__results a:hover {
+    text-decoration: underline;
+}

@@ -1,0 +1,296 @@
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 33px;
+    row-gap: 40px;
+    margin: 0 auto;
+}
+
+.card {
+    flex: 1 1 auto;
+    min-height: 701px;
+    max-width: 250px;
+    flex-basis: calc(20% - 17px);
+    box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    transition: 0.2s;
+    position: relative;
+}
+
+.card:hover {
+    box-shadow: 4px 8px 16px rgba(255, 102, 51, 0.2);
+}
+
+.card__top {
+    flex: 0 0 220px;
+    position: relative;
+    overflow: hidden;
+}
+
+.card__image {
+    height: 220px;
+    overflow: hidden;
+}
+
+.card__image > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: 0.2s;
+}
+
+.card__image:hover > img {
+    transform: scale(1.1);
+}
+
+.card__label {
+    padding: 4px 8px;
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background: #ff6633;
+    border-radius: 4px;
+    font-weight: 400;
+    font-size: 16px;
+    color: #fff;
+}
+
+.card__bottom {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px;
+    height: 100%;
+}
+
+.card__sizes {
+    margin-bottom: 2px;
+    flex-grow: 1;
+}
+
+.card__bottom span{
+    font-size: 17px;
+}
+
+.card__bottom h4 {
+    display: block;
+    font-size: 16px;
+    line-height: 150%;
+    color: #414141;
+    font-weight: lighter;
+    font-style: italic;
+    margin-top: 10px;
+}
+
+.card__bottom p {
+    font-size: 13px;
+    line-height: 150%;
+    display: inline-block;
+}
+
+.card__prices {
+    display: flex;
+    align-self: flex-start;
+    margin-bottom: 10px;
+}
+
+.card__price::after {
+    content: "₽";
+    margin-left: 4px;
+    position: relative;
+}
+
+.card__price--discount {
+    font-weight: 700;
+    font-size: 20px;
+    color: #414141;
+    min-width: 80px;
+}
+
+.card__title {
+    display: block;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 150%;
+    color: #414141;
+}
+
+.card__title:hover {
+    color: #ff6633;
+}
+
+.card__add {
+    display: block;
+    width: 90%;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    margin-bottom: 0; /* добавлено */
+    font-weight: bold;
+}
+
+.card__add:hover {
+    border: 1px solid #ff6633;
+    background-color: #ff6633;
+    color: #fff;
+}
+
+.jpa {
+    width: 100%;
+    height: 100%;
+    padding: 3px;
+    border-radius: 10px;
+}
+
+.product__sizes {
+    display: flex;
+    align-items: center;
+}
+
+.product__sizes h4 {
+    margin-right: 5px;
+}
+
+.btn-group {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: 5px;
+}
+
+.btn {
+    flex: 1 1 auto;
+    min-width: 40px;
+    margin-bottom: 5px;
+}
+
+@media (max-width: 767px) {
+    .cards {
+        column-gap: 15px;
+        row-gap: 20px;
+    }
+
+    .card {
+        min-width: 150px;
+        max-width: 200px;
+        flex-basis: calc(50% - 10px);
+    }
+
+    .card__top {
+        flex: 0 0 150px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .card__image {
+        height: 150px;
+        overflow: hidden;
+    }
+
+    .card__image > img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: 0.2s;
+    }
+
+    .card__image:hover > img {
+        transform: scale(1.1);
+    }
+
+    .card__label {
+        padding: 3px 6px;
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        background: #ff6633;
+        border-radius: 4px;
+        font-weight: 400;
+        font-size: 16px;
+        color: #fff;
+    }
+
+    .card__bottom {
+        display: flex;
+        min-height: 100px;
+        flex-direction: column;
+        justify-content: space-between;
+
+        padding: 10px;
+    }
+
+    .card__sizes {
+        margin-bottom: 5px;
+        flex-grow: 1; /* добавлено это свойство */
+    }
+
+    .card__bottom h4 {
+        display: block;
+        font-size: 11px;
+        line-height: 80%;
+        color: #414141;
+        font-weight: lighter;
+        font-style: italic;
+        margin-top: 5px;
+    }
+
+    .card__bottom p {
+        font-size: 12px;
+        line-height: 115%;
+        display: inline-block;
+    }
+
+    .card__prices {
+        display: flex;
+        align-self: flex-start;
+        margin-bottom: 8px;
+    }
+
+    .card__price::after {
+        content: "₽";
+        margin-left: 4px;
+        position: relative;
+    }
+
+    .card__price--discount {
+        font-weight: 700;
+        font-size: 17px;
+        color: #414141;
+        min-width: 80px;
+    }
+
+    .card__title {
+        display: block;
+        font-weight: 350;
+        font-size: 15px;
+        line-height: 110%;
+        color: #414141;
+    }
+
+    .card__title:hover {
+        color: #ff6633;
+    }
+
+
+    .card__add {
+        width: 90%;
+        padding: 10px;
+        text-align: center;
+        cursor: pointer;
+        margin-top: auto;
+        font-weight: bold;
+    }
+
+    .card__add:hover {
+        border: 1px solid #ff6633;
+        background-color: #ff6633;
+        color: #fff;
+    }
+
+    .jpa {
+        width: 100%;
+        height: 100%;
+        padding: 3px;
+        border-radius: 10px;
+    }
+}

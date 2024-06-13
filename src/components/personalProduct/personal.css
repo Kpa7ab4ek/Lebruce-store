@@ -1,0 +1,194 @@
+.product-page {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center; /* Выравнивание по центру */
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.product-image {
+    width: 50%;
+    margin: 20px;
+    object-fit: contain; /* Сохранение пропорций */
+}
+
+.product-info {
+    width: 45%;
+    position: relative;
+    height: 750px;
+}
+
+.product-price {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.product-brand {
+    font-style: italic;
+}
+
+.card__add {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1em;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+select {
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    color: #333;
+    font-size: 14px;
+    padding: 6px 12px;
+    width: auto;
+    height: auto;
+}
+
+.product__review {
+    width: 800px;
+    margin: 27px auto;
+}
+
+.review-form {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.review-form label {
+    width: 100px;
+    margin-right: 10px;
+}
+
+.review-form input,
+.review-form select,
+.review-form textarea {
+    flex-grow: 1;
+    margin-bottom: 10px;
+}
+
+.review-form button {
+    margin-left: auto;
+}
+
+.reviews {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.review {
+    width: 300px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+
+.review h3 {
+    margin-bottom: 10px;
+}
+
+.load-more {
+    margin-left: auto;
+}
+
+
+.product__siz button {
+    background-color: transparent;
+    border: 2px solid #ccc;
+    color: #333;
+    padding: 3px 2px;
+    cursor: pointer;
+}
+
+.product__sizes button:hover {
+    background-color: #f0ad4e !important;
+    border-color: #f0ad4e !important;
+    color: #fff !important;
+}
+
+.product__sizes button:disabled {
+    background-color: #eee;
+    border-color: #ccc;
+    color: #999;
+    cursor: not-allowed;
+}
+
+.product__sizes button.active {
+    background-color: #f0ad4e !important;
+    border-color: #f0ad4e !important;
+    color: #fff !important;
+}
+.product__review {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 30px;
+}
+.sendRev {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.sendRev:hover {
+    background-color: #3e8e41;
+}
+
+.sendRev:disabled {
+    background-color: #ccc;
+    color: #6c6c6c;
+    cursor: not-allowed;
+}
+.load-more {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    height: 50px;
+}
+
+.load-more:hover {
+    background-color: #3e8e41;
+}
+
+.load-more:disabled {
+    background-color: #ccc;
+    color: #6c6c6c;
+    cursor: not-allowed;
+}
+
+.persRev {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    border: 2px solid #ccc;
+}
+
+.persRev button {
+    align-self: flex-end;
+    margin-bottom: 10px;
+    border-radius: 10px;
+}

@@ -1,0 +1,75 @@
+.immmggg{
+    max-height: 100px;
+}
+.cart__close {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 5px;
+    padding: 3px;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    font-size: 14px;
+    line-height: 1;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 25px;
+    height: 25px;
+}
+
+.cart__close:hover {
+    background-color: #f5f5f5;
+}
+
+.cart__close:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #ccc;
+}
+
+.cart__del {
+    display: block;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    line-height: 1;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    background-color: #f00;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cart__del:hover {
+    background-color: #e00;
+}
+
+.cart__del:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #ccc;
+}
+
+
+.size__item{
+    text-align: center;
+}
+
+.size-title{
+    padding-right: 40px;
+}
+
+
+.quantity__buttons {
+    display: flex;
+}
+
+
+.quantity__value input {
+    width: 30px;
+    height: 25px;
+    padding: 0 5px;
+    border: none;
+    border-radius: 0;
+    text-align: center;
+}
