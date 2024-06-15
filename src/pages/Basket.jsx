@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { BuyCard } from "../components/buyCard/BuyCard";
-import { useNavigate } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {BuyCard} from "../components/buyCard/BuyCard";
+import {useNavigate} from "react-router-dom";
 import axios from "axios";
 
 function isAuthenticated() {
@@ -12,6 +12,7 @@ export const Basket = () => {
     const [basket, setBasket] = useState({});
     const [totalPrice, setTotalPrice] = useState(0);
     const navigate = useNavigate();
+    const token = localStorage.getItem("token");
 
     useEffect(() => {
         if (!isAuthenticated()) {
@@ -30,7 +31,7 @@ export const Basket = () => {
                 .get("https://lebruce.ru/api/v1/cart", config)
                 .then((response) => {
                     setBasket(response.data);
-                    setTotalPrice(response.data.totalPrice); // <-- установите общую цену из ответа сервера
+                    setTotalPrice(response.data.totalPrice);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -38,9 +39,35 @@ export const Basket = () => {
         }
     }, []);
 
-    const handleUpdateTotalPrice = (newTotalPrice) => { // <-- добавьте функцию для обновления общей цены
+    const handleUpdateTotalPrice = (newTotalPrice) => {
         setTotalPrice(newTotalPrice);
     };
+
+
+    const handlePlaceOrder = () => {
+        const token = localStorage.getItem("token");
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+        };
+
+        axios
+            .post("https://lebruce.ru/api/v1/orders", {}, config)
+            .then((response) => {
+                console.log(response);
+                localStorage.removeItem('buttonState');
+                localStorage.setItem('basket', '0');
+                navigate('/paypage');
+            })
+            .catch((error) => {
+                console.log(error);
+                navigate("/addadd")
+            });
+    };
+
 
     return (
         <div>
@@ -63,7 +90,7 @@ export const Basket = () => {
                             <div className="shopping__cart__table">
                                 <table>
                                     <tbody>
-                                    <BuyCard onUpdateTotalPrice={handleUpdateTotalPrice} />
+                                    <BuyCard onUpdateTotalPrice={handleUpdateTotalPrice}/>
                                     </tbody>
                                 </table>
                             </div>
@@ -73,10 +100,10 @@ export const Basket = () => {
                                 <h6>Заказ</h6>
                                 <ul>
                                     <li>
-                                        Итого: <span>{totalPrice}Р</span>
+                                        Итого: <span>{totalPrice} ₽</span>
                                     </li>
                                 </ul>
-                                <a href="/PayPage" className="primary-btn">
+                                <a className="primary-btn" onClick={handlePlaceOrder} >
                                     Оформить заказ
                                 </a>
                             </div>

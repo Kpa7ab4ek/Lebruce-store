@@ -1,13 +1,10 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, {createContext, useState, useEffect} from "react";
 import axios from "axios";
-
-
-console.log('old:  '+ localStorage.getItem('token'));
 
 const AuthContext = createContext();
 
 
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({children}) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [token, setToken] = useState(localStorage.getItem("token") || null);
 
@@ -26,7 +23,6 @@ export const AuthProvider = ({ children }) => {
                     const newToken = response.data.token;
                     const tokenExpirationTime = response.data.expires_in;
 
-                    // сохраняем новый токен и время его истечения в локальное хранилище
                     localStorage.setItem("token", newToken);
                     localStorage.setItem("tokenExpirationTime", tokenExpirationTime);
 
@@ -36,16 +32,15 @@ export const AuthProvider = ({ children }) => {
                 .catch((error) => {
                     console.error("Ошибка при обновлении токена:", error);
                     setIsAuthenticated(false);
+                    localStorage.removeItem('token');
                 });
         }
     };
 
-    // Вызываем updateToken при первом монтировании компонента
     useEffect(() => {
         updateToken();
     }, []);
 
-    // Проверяем время истечения токена каждые 10 секунд
     useEffect(() => {
         const tokenExpirationTime = localStorage.getItem("tokenExpirationTime");
 
@@ -54,16 +49,13 @@ export const AuthProvider = ({ children }) => {
                 const currentTime = Math.floor(Date.now() / 1000);
 
                 if (currentTime >= tokenExpirationTime) {
-                    // удаляем токен из локального хранилища
                     localStorage.removeItem("token");
-                    // удаляем время истечения токена из локального хранилища
                     localStorage.removeItem("tokenExpirationTime");
                     setIsAuthenticated(false);
                     clearInterval(interval);
                 }
             }, 10000);
 
-            // Возвращаем функцию для очистки интервала при размонтировании компонента
             return () => {
                 clearInterval(interval);
             };
@@ -72,13 +64,9 @@ export const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider
-            value={{ isAuthenticated, setIsAuthenticated, token, setToken, updateToken }}
+            value={{isAuthenticated, setIsAuthenticated, token, setToken, updateToken}}
         >
             {children}
         </AuthContext.Provider>
     );
 };
-
-
-
-console.log('new:   '+ localStorage.getItem('token'));

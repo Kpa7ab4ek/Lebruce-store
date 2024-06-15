@@ -10,7 +10,7 @@
     flex: 1 1 auto;
     min-height: 701px;
     max-width: 250px;
-    flex-basis: calc(20% - 17px);
+    flex-basis: calc(25% - 17px);
     box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 4px;
     transition: 0.2s;
@@ -68,7 +68,7 @@
     flex-grow: 1;
 }
 
-.card__bottom span{
+.card__bottom span {
     font-size: 17px;
 }
 
@@ -121,11 +121,11 @@
 
 .card__add {
     display: block;
-    width: 90%;
+    width: 100%;
     padding: 10px;
     text-align: center;
     cursor: pointer;
-    margin-bottom: 0; /* добавлено */
+    margin-bottom: 0;
     font-weight: bold;
 }
 

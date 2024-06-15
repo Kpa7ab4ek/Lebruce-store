@@ -5,9 +5,9 @@ import gyj from "../../img/img_2.png";
 import './news.css'
 
 const arr = [{
-    title: 'Какой хороший день, чтобы пойти на СВО',
+    title: 'Тяжёлый экзамен',
     img: tank,
-    date: '22 февраля 2022',
+    date: '15 июня 2024',
     commit: 'Записаться'
 }, {
     title: 'День Рождение разработчика',

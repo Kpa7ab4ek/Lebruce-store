@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import axios, {head} from "axios";
+import axios from "axios";
 import {useNavigate, useParams} from "react-router-dom";
 import ImageSlider from "../imageSlider/ImageSlider";
 import "./personal.css";
@@ -7,13 +7,14 @@ import moment from "moment";
 
 
 export function PersonalProduct() {
+
     const [product, setProduct] = useState(null);
     const {productName} = useParams();
     const navigate = useNavigate();
     const [buttonState, setButtonState] = useState({});
     const [selectedSize, setSelectedSize] = useState(null);
     const [reviews, setReviews] = useState([]);
-    const [limit, setLimit] = useState(1);
+    const [size, setSize] = useState(10);
     const [persRev, setPersRev] = useState(null);
     const token = localStorage.getItem('token');
     const productId = product?.productId;
@@ -24,12 +25,12 @@ export function PersonalProduct() {
             if (productId) {
                 const response = await fetch(`https://lebruce.ru/api/v1/products/review?productId=${productId}`);
                 const data = await response.json();
-                setReviews(data.content.slice(0, limit));
+                setReviews(data.content.slice(0, size));
             }
         }
 
         fetchReviews();
-    }, [limit, product]);
+    }, [size, productId]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -86,7 +87,7 @@ export function PersonalProduct() {
 
 
     const handleLoadMore = () => {
-        setLimit(limit + 1);
+        setSize(size + 10);
     };
 
     useEffect(() => {
@@ -126,14 +127,22 @@ export function PersonalProduct() {
         if (localStorage.getItem("token") === null) {
             navigate("/login");
         } else {
-            const data = JSON.stringify({productId, quantity: 1, sizeId: selectedSize});
+            const data = JSON.stringify({ productId, quantity: 1, sizeId: selectedSize });
+
             axios
                 .post("https://lebruce.ru/api/v1/cart/item", data, config)
                 .then((response) => {
                     console.log(response);
+
+                    let currentQuantity = parseInt(localStorage.getItem('basket')) || 0;
+
+                    currentQuantity++;
+
+                    localStorage.setItem('basket', currentQuantity);
+
                     setButtonState((prevState) => {
-                        const newState = {...prevState};
-                        newState[productId] = {...newState[productId], [selectedSize]: true};
+                        const newState = { ...prevState };
+                        newState[productId] = { ...newState[productId], [selectedSize]: true };
                         localStorage.setItem("buttonState", JSON.stringify(newState));
                         return newState;
                     });
@@ -143,6 +152,7 @@ export function PersonalProduct() {
                 });
         }
     };
+
 
     const handleDeleteReview = () => {
         if (window.confirm("Вы уверены, что хотите удалить свой отзыв?")) {
@@ -201,7 +211,7 @@ export function PersonalProduct() {
                     >
                         <p>Отзывы: {product.reviewCount}</p>
                     </a>
-                    {/* Добавляем информацию о характеристиках */}
+
                     {product.characteristics && (
                         <div className="product-characteristics">
                             <h3>Характеристики:</h3>
@@ -220,7 +230,7 @@ export function PersonalProduct() {
                                 key={size.id}
                                 onClick={() => setSelectedSize(size.id)}
                                 disabled={!size.available}
-                                className={size.id === selectedSize ? 'active' : ''} // добавляем условный класс
+                                className={size.id === selectedSize ? 'active' : ''}
                             >
                                 {size.size}
                             </button>
@@ -240,9 +250,7 @@ export function PersonalProduct() {
                     <h2>Отзывы</h2>
 
                     <form className="review-form" onSubmit={handleSubmit}>
-
                         <label htmlFor="rating">Оценка:</label>
-
 
                         <div>
                             <input type="radio" id="rating1" name="rating" value="1" required/>
@@ -304,7 +312,7 @@ export function PersonalProduct() {
                             </div>
                         ))}
 
-                        {reviews.length >= limit && (
+                        {reviews.length >= size && (
                             <button className="load-more" onClick={handleLoadMore}>
                                 Загрузить ещё отзывов
                             </button>

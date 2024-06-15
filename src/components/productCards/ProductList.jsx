@@ -36,6 +36,13 @@ export function ProductList({ products }) {
                 .post("https://lebruce.ru/api/v1/cart/item", data, config)
                 .then((response) => {
                     console.log(response);
+
+                    let currentQuantity = parseInt(localStorage.getItem('basket')) || 0;
+
+                    currentQuantity++;
+
+                    localStorage.setItem('basket', currentQuantity);
+
                     setButtonState((prevState) => {
                         const newState = { ...prevState };
                         newState[productId] = { ...newState[productId], [selectedSize]: true };
@@ -48,6 +55,8 @@ export function ProductList({ products }) {
                 });
         }
     };
+
+
 
     const handleProductClick = (productId) => {
         navigate(`/products/${productId}`);
@@ -80,15 +89,14 @@ export function ProductList({ products }) {
 
 
     useEffect(() => {
-        // Проверяем, что доступные размеры товаров загружены
         const allProductsHaveSizes = products.every((product) => product.sizes);
 
         if (allProductsHaveSizes) {
-            // Перебираем все товары
+
             products.forEach((product) => {
-                // Если для товара есть доступные размеры
+
                 if (product.sizes) {
-                    // Находим минимальный доступный размер
+
                     const minSize = product.sizes.reduce((min, size) => {
                         if (size.available && size.size < min.size) {
                             return size;
@@ -96,7 +104,6 @@ export function ProductList({ products }) {
                         return min;
                     }, product.sizes[0]);
 
-                    // Выбираем минимальный размер для товара
                     setSelectedSizes((prevState) => {
                         return { ...prevState, [product.productId]: minSize.id };
                     });

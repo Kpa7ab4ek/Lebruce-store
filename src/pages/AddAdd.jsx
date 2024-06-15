@@ -112,12 +112,14 @@ const AddAdd = () => {
                 </label>
 
                 <label className="add-address-page__label">
-                    ZIP-код:
+                    Индекс
                     <input
                         className="add-address-page__input"
-                        type="text"
+                        type="number"
                         value={zipCode}
                         onChange={(e) => setZipCode(e.target.value)}
+                        maxLength={6}
+                        minLength={6}
                     />
                 </label>
 

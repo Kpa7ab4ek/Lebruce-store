@@ -5,9 +5,9 @@ import axios from "axios";
 export function BuyCard({buttonState, setButtonState, onUpdateTotalPrice}) {
     const [products, setProducts] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
+    const token = localStorage.getItem('token');
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
 
         const config = {
             headers: {
@@ -40,6 +40,13 @@ export function BuyCard({buttonState, setButtonState, onUpdateTotalPrice}) {
             .delete(`https://lebruce.ru/api/v1/cart/item/${shoppingCartItemId}`, config)
             .then((response) => {
                 console.log(response);
+
+                let currentQuantity = parseInt(localStorage.getItem('basket')) || 0;
+
+                currentQuantity--;
+
+                localStorage.setItem('basket', currentQuantity);
+
                 setProducts((prevProducts) =>
                     prevProducts.filter((item) => item.shoppingCartItemId !== shoppingCartItemId)
                 );
@@ -63,6 +70,7 @@ export function BuyCard({buttonState, setButtonState, onUpdateTotalPrice}) {
                 console.log(error);
             });
     };
+
 
     const handleIncrement = (shoppingCartItemId, productId) => {
         const token = localStorage.getItem("token");
@@ -115,7 +123,8 @@ export function BuyCard({buttonState, setButtonState, onUpdateTotalPrice}) {
         const item = products.find((item) => item.shoppingCartItemId === shoppingCartItemId);
 
         if (item.quantity === 1) {
-            // If the quantity is 1, delete the item from the cart instead of decrementing
+            const token = localStorage.getItem("token");
+
             const config = {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -138,6 +147,11 @@ export function BuyCard({buttonState, setButtonState, onUpdateTotalPrice}) {
                         const parsedButtonState = JSON.parse(storedButtonState);
                         delete parsedButtonState[productId];
                         localStorage.setItem("buttonState", JSON.stringify(parsedButtonState));
+                        let currentQuantity = parseInt(localStorage.getItem('basket')) || 0;
+
+                        currentQuantity--;
+
+                        localStorage.setItem('basket', currentQuantity);
                     }
                     setButtonState((prevState) => {
                         const newState = {...prevState};
@@ -148,8 +162,9 @@ export function BuyCard({buttonState, setButtonState, onUpdateTotalPrice}) {
                 .catch((error) => {
                     console.log(error);
                 });
-        } else {
-            // If the quantity is more than 1, decrement the quantity
+        }
+        else {
+
             const config = {
                 headers: {
                     Authorization: `Bearer ${token}`,

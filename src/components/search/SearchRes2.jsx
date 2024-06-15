@@ -1,29 +1,28 @@
-import React, {useEffect, useState} from "react";
-import "./search.css";
+import React, {useState} from "react";
+import './search.css'
 
-const SearchResults = ({ searchResults, handleCategoryChange, handleBrandChange }) => {
+const SearchRes = ({searchResults, handleCategoryChange, handleBrandChange}) => {
     const [showResults, setShowResults] = useState(false);
+    const {catData, brData, prData} = searchResults;
 
-    useEffect(() => {
+    useState(() => {
         setShowResults(true);
     }, [searchResults]);
-
-    const handleClick = (event, handler) => {
-        event.preventDefault();
-        handler();
-    };
 
     return (
         <div className={"search__results"}>
             {showResults && (
                 <ul>
-                    {searchResults.pr.content && searchResults.pr.content.length > 0 && (
+                    {prData && prData.length > 0 && (
                         <li>
                             <h4>Товары:</h4>
                             <ul>
-                                {searchResults.pr.content.map((product) => (
+                                {prData.map((product) => (
                                     <li key={product.productId}>
-                                        <a href={`/products/${product.productId}`} target="_blank">
+                                        <a
+                                            href={`/products/${product.productId}`}
+                                            target="_blank"
+                                        >
                                             <img
                                                 src={product.imageUrls[0]}
                                                 alt={product.productName}
@@ -37,13 +36,21 @@ const SearchResults = ({ searchResults, handleCategoryChange, handleBrandChange 
                             </ul>
                         </li>
                     )}
-                    {searchResults.cat.content && searchResults.cat.content.length > 0 && (
+
+                    {catData && catData.length > 0 && (
                         <li>
                             <h4>Категории:</h4>
                             <ul>
-                                {searchResults.cat.content.map((category) => (
+                                {catData.map((category) => (
                                     <li key={category.categoryId}>
-                                        <a href="#" onClick={(event) => handleClick(event, () => handleCategoryChange(category.categoryName))}>
+                                        <a
+                                            href="#"
+                                            onClick={(event) => {
+                                                event.preventDefault();
+                                                handleCategoryChange(category.categoryName);
+                                            }}
+                                            target="_blank"
+                                        >
                                             {category.categoryName}
                                         </a>
                                     </li>
@@ -51,13 +58,21 @@ const SearchResults = ({ searchResults, handleCategoryChange, handleBrandChange 
                             </ul>
                         </li>
                     )}
-                    {searchResults.br.content && searchResults.br.content.length > 0 && (
+
+                    {brData && brData.length > 0 && (
                         <li>
                             <h4>Бренды:</h4>
                             <ul>
-                                {searchResults.br.content.map((brand) => (
+                                {brData.map((brand) => (
                                     <li key={brand.id}>
-                                        <a href="#" onClick={(event) => handleClick(event, () => handleBrandChange(brand.name))}>
+                                        <a
+                                            href="#"
+                                            onClick={(event) => {
+                                                event.preventDefault();
+                                                handleBrandChange(brand.name);
+                                            }}
+                                            target="_blank"
+                                        >
                                             {brand.name}
                                         </a>
                                     </li>
@@ -71,4 +86,4 @@ const SearchResults = ({ searchResults, handleCategoryChange, handleBrandChange 
     );
 };
 
-export default SearchResults;
+export default SearchRes;

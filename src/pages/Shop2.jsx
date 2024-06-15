@@ -2,6 +2,7 @@ import '../../src/css/style.css'
 import React, {useCallback, useEffect, useState} from "react";
 import {ProductList} from "../components/productCards/ProductList";
 import SearchResults from "../components/search/SearchRes.jsx";
+import axios from "axios";
 
 export const Shop = () => {
     const [categories, setCategories] = useState([]);
@@ -42,6 +43,37 @@ export const Shop = () => {
             setCategories(data.content);
         } catch (error) {
             console.error('Fetch failed: ', error);
+            throw error;
+        }
+    }
+
+    async function fetchProductsByNameWithDelay(query, delay) {
+        try {
+            const searchCat = axios.get(`https://lebruce.ru/api/v1/categories/search?query=${query}`);
+
+            const searchBr = axios.get(`https://lebruce.ru/api/v1/brands/search?query=${query}`);
+
+            const searchPr = axios.get(`https://lebruce.ru/api/v1/products/search?query=${query}`);
+
+            const results = await new Promise((resolve) => {
+                setTimeout(async () => {
+                    try {
+                        const responses = await Promise.all([searchCat, searchBr, searchPr]);
+                        resolve(responses);
+                    } catch (error) {
+                        console.error(error);
+                        resolve([]);
+                    }
+                }, delay);
+            });
+
+            const catData = results[0].data.content || [];
+            const brData = results[1].data.content || [];
+            const prData = results[2].data.content || [];
+
+            return {catData, brData, prData};
+        } catch (error) {
+            console.error(error);
             throw error;
         }
     }
@@ -132,6 +164,7 @@ export const Shop = () => {
             let url = `https://lebruce.ru/api/v1/products/brand?brandName=${brandName}`;
             if (selectedSortField) {
                 url += `&page=${page || 0}&size=${size || 6}&sort=${selectedSortField},${sortOrder}`;
+
             }
 
             const response = await fetch(url, {
@@ -198,6 +231,19 @@ export const Shop = () => {
         }
     }, [selectedBrand, sortField, sortOrder, page, selectedSortField]);
 
+    useEffect(() => {
+        if (searchQuery.length > 0) {
+            fetchProductsByNameWithDelay(searchQuery, 3000)
+                .then((data) => {
+                    setSearchResults(data);
+                })
+                .catch((error) => {
+                    console.error("Error fetching products: ", error);
+                });
+        } else {
+            setSearchResults({cat: [], br: [], pr: []});
+        }
+    }, [searchQuery]);
 
     useEffect(() => {
         fetchCategoriesWithPage(4);
@@ -250,6 +296,24 @@ export const Shop = () => {
         setPage(newPage);
     }, []);
 
+    const handleSearchQueryChange = useCallback((event) => {
+        const query = event.target.value;
+        setSearchQuery(query);
+        if (query.length > 0) {
+            fetchProductsByNameWithDelay(query, 500)
+                .then((data) => {
+                    setSearchResults(data);
+                    setShowSearchResults(true);
+                })
+                .catch((error) => {
+                    console.error("Error fetching products: ", error);
+                });
+        } else {
+            setSearchResults({cat: [], br: [], pr: []});
+            setShowSearchResults(false);
+        }
+    }, []);
+
 
     const handleSearch = async () => {
         if (searchQuery) {
@@ -271,33 +335,6 @@ export const Shop = () => {
         setSelectedCategory(null);
         setSelectedBrand(null);
     };
-
-
-    const handleSearchQueryChange = useCallback(async (event) => {
-        setSearchQuery(event.target.value);
-        if (event.target.value.length) {
-            const [productsResponse, categoriesResponse, brandsResponse] = await Promise.all([
-                fetch(`https://lebruce.ru/api/v1/products/search?query=${event.target.value}`),
-                fetch(`https://lebruce.ru/api/v1/categories/search?query=${event.target.value}`),
-                fetch(`https://lebruce.ru/api/v1/brands/search?query=${event.target.value}`)
-            ]);
-            const [productsData, categoriesData, brandsData] = await Promise.all([
-                productsResponse.json(),
-                categoriesResponse.json(),
-                brandsResponse.json()
-            ]);
-            setSearchResults({
-                cat: categoriesData,
-                br: brandsData,
-                pr: productsData
-            });
-        } else {
-            setSearchResults({ cat: [], br: [], pr: [] });
-        }
-    }, []);
-
-
-
 
     return (
         <>
@@ -389,6 +426,7 @@ export const Shop = () => {
                                                 placeholder={"Поиск"}
                                                 value={searchQuery}
                                                 onChange={handleSearchQueryChange}
+                                                onBlur={() => setSearchResults({cat: [], br: [], pr: []})}
                                             />
                                             <button onClick={handleSearch}>Найти</button>
                                             {searchQuery && (
@@ -449,6 +487,11 @@ export const Shop = () => {
                     <div className="product__pagination">
                         <button onClick={(event) => handlePageChange(event, page - 1)}
                                 disabled={page === 0}> {"<"} </button>
+                        <a onClick={(event) => handlePageChange(event, 0)} href="#">1</a>
+                        {page > 0}
+                        <a onClick={(event) => handlePageChange(event, page)} href="#">{page + 1}</a>
+                        {page < totalPages - 1}
+                        <a onClick={(event) => handlePageChange(event, totalPages - 1)} href="#">{totalPages}</a>
                         <button onClick={(event) => handlePageChange(event, page + 1)}
                                 disabled={page === totalPages - 1}>{">"}</button>
                     </div>
